@@ -1,0 +1,70 @@
+<script type="text/javascript">
+  RED.nodes.registerType('neo4j-bolt-server', {
+    category: 'config',
+    defaults: {
+      name: { value: '' },
+      url: { value: 'bolt://', required: true },
+      user: { value: '' },
+      pass: { value: '' }
+    },
+    label: function () {
+      return this.url;
+    },
+    oneditprepare: function () {
+      var tabs = RED.tabs.create({
+        id: "neo4j-bolt-server-tabs",
+        onchange: function (tab) {
+          $("#neo4j-bolt-server-tabs-content").children().hide();
+          $("#" + tab.id).show();
+        }
+      });
+      tabs.addTab({
+        id: "neo4j-bolt-server-tab-connection",
+        label: "Connection"
+      });
+      tabs.addTab({
+        id: "neo4j-bolt-server-tab-security",
+        label: "Security"
+      });
+      setTimeout(function () { tabs.resize(); }, 0);
+    }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="neo4j-bolt-server">
+    <div class="form-row">
+      <label for="node-config-input-name">
+        <i class="fa fa-tag"></i> <span>Name</span>
+      </label>
+      <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+      <ul id="neo4j-bolt-server-tabs"
+        style="background: #fff; min-width: 600px; margin-bottom: 20px;">
+      </ul>
+    </div>
+    <div id="neo4j-bolt-server-tabs-content" style="min-height: 170px;">
+      <div id="neo4j-bolt-server-tab-connection" style="display:none">
+        <div class="form-row">
+          <label for="node-config-input-url">
+            <i class="icon-bookmark"></i> Url
+          </label>
+          <input type="text" id="node-config-input-url" placeholder="bolt://">
+        </div>
+      </div>
+      <div id="neo4j-bolt-server-tab-security" style="display:none">
+        <div class="form-row">
+          <label for="node-config-input-user">
+            <i class="icon-tag"></i> user
+          </label>
+          <input type="text" id="node-config-input-user" placeholder="neo4j">
+        </div>
+        <div class="form-row">
+          <label for="node-config-input-pass">
+            <i class="icon-tag"></i> pass
+          </label>
+          <input type="password" id="node-config-input-pass" placeholder="test1234">
+        </div>
+      </div>
+    </div>
+  </script>

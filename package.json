@@ -1,29 +1,38 @@
 {
-  "name": "node-red-contrib-nulli-neo4j",
-  "version": "1.0.6",
-  "description": "Node RED node for neo4j",
-  "main": "neo4j.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "author": {
+    "name": "salnikov@gmail.com"
   },
-  "author": "schaturvedi@gmail.com",
-  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/webmaxru/node-red-contrib-neo4j-bolt/issues"
+  },
+  "bundleDependencies": false,
   "dependencies": {
     "neo4j-driver": "latest"
   },
+  "deprecated": false,
+  "description": "Node RED node for neo4j",
+  "homepage": "https://github.com/webmaxru/node-red-contrib-neo4j-bolt#readme",
   "keywords": [
     "node-red",
     "nodered",
     "neo4j",
     "cypher"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nullibrew/node-red-contrib-nulli-neo4j.git"
-  },
+  "license": "MIT",
+  "main": "neo4j.js",
+  "name": "node-red-contrib-neo4j-bolt",
   "node-red": {
     "nodes": {
-      "node-red-contrib-nulli-neo4j": "neo4j.js"
+      "neo4j-bolt": "neo4j.js",
+      "neo4j-bolt-server": "neo4j_server.js"
     }
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webmaxru/node-red-contrib-neo4j-bolt.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
 }

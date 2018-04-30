@@ -1,8 +1,9 @@
 <script type="text/javascript">
-    RED.nodes.registerType('node-red-contrib-nulli-neo4j',{
-        category: 'Nulli',
-        color: '#a6bbcf',
+    RED.nodes.registerType('neo4j-bolt',{
+        category: 'Neo4j Bolt',
+        color: '#97ddf4',
         defaults: {
+            server: {value:"", type:"neo4j-bolt-server", required:true},
             name: {value:""},
             url: {value:""},
             username: {value:""},
@@ -13,31 +14,26 @@
         outputs:2,
         icon: "neo4j.png",
         label: function() {
-            return this.name||"node-red-contrib-nulli-neo4j";
+            return this.name||"neo4j-bolt";
         }
     });
 </script>
 
-<script type="text/x-red" data-template-name="node-red-contrib-nulli-neo4j">
+<script type="text/x-red" data-template-name="neo4j-bolt">
+    <div class="form-row">
+        <label for="node-input-server"><i class="icon-tag"></i> server</label>
+        <input type="text" id="node-input-server" placeholder="server">
+      </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i>Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
         <br/>
-        <label for="node-input-url"><i class="icon-tag"></i>URL</label>
-        <input type="text" id="node-input-url" placeholder="bolt://localhost:7687">
-        <br/>
-        <label for="node-input-username"><i class="icon-tag"></i>Username</label>
-        <input type="text" id="node-input-username" placeholder="neo4j">
-        <br/>
-        <label for="node-input-password"><i class="icon-tag"></i>Password</label>
-        <input type="password" id="node-input-password" placeholder="test1234">
-        <br/>
         <label for="node-input-query"><i class="icon-tag"></i>Cypher Query (opt)</label>
-        <input type="text" id="node-input-query" placeholder="MATCH (o:Object {attrib: 'value'}) RETURN o">
+        <textarea id="node-input-query" placeholder="MATCH (o:Object {attrib: 'value'}) RETURN o"></textarea>
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="node-red-contrib-nulli-neo4j">
+<script type="text/x-red" data-help-name="neo4j-bolt">
     <p>A Neo4j cypher query node</p>
 
     <p>Neo4J cypher node that lets you run generic cypher queries on a Neo4j graph database.</p>
@@ -50,6 +46,6 @@
     </p>
 
     <p>
-        Supported by <a href="http://nulli.com">Nulli</a>
+        Supported by <a href="https://github.com/webmaxru/">Maxim Salnikov</a>. Based on <a href="https://github.com/nullibrew/node-red-contrib-nulli-neo4j">node-red-contrib-nulli-neo4j</a> by <a href="http://nulli.com">Nulli</a>
     </p>
 </script>

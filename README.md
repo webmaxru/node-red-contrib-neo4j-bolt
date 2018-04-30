@@ -1,19 +1,20 @@
-# node-red-contrib-nulli-neo4j
-A <a href="http://nodered.org" target="_new">Node-RED</a> node that lets you run generic cypher queries on a Neo4j graph database.
+# Neo4j Bolt with shareable driver
+
+A <a href="http://nodered.org" target="_new">Node-RED</a> node with the shareable server configuration that lets you run generic cypher queries on a Neo4j graph database.
 
 ## Install
 
 Run the following command in the root directory of your Node-RED install or home directory (usually ~/.node-red) and will also install needed libraries.
 
 ```
-npm install node-red-contrib-nulli-neo4j
+npm install node-red-contrib-neo4j-bolt
 ```
 
 ## Usage
 
-You can define the Neo4j bolt URL and the basic authentication username and password in the node's configuration.
+You specify a cypher query in the configuration. The parameters for the query (if needed) are read from `msg.params`. The cypher query can also be passed to the node as `msg.query`.
 
-You can also specify a cypher query in the configuration. The parameters for the query (if needed) are read from `msg.params`. The cypher query can also be passed to the node as `msg.query`. Below are some examples:
+You define the Neo4j bolt URL and the basic authentication username and password in the configuration node which you can share across multiple neo4j-bolt nodes.
 
 * Example of hard coded query in the configuration of the node.
 ```
@@ -45,15 +46,11 @@ msg.params:
 
 The node has two outputs. If the query returns only 1 record, the requested properties of the node are sent to output #1. If the query returns multiple records, an array of requested properties of the nodes are sent to output #2.
 
-You can import the following and use it with the [neo4j example movie dataset](https://neo4j.com/developer/movie-database/)
-
-![Example Flow](./docs/images/example_flow.png)
-
-```
-[{"id":"e10395d.a56ef68","type":"inject","z":"488d970f.76d278","name":"Single record query","topic":"","payload":"","payloadType":"date","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":178,"y":170,"wires":[["9eb7f4e.b975a08"]]},{"id":"edc735f1.c9aeb8","type":"debug","z":"488d970f.76d278","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","x":978,"y":215,"wires":[]},{"id":"9eb7f4e.b975a08","type":"change","z":"488d970f.76d278","name":"","rules":[{"t":"set","p":"query","pt":"msg","to":"MATCH (m:Movie {title: $moviename})  RETURN m","tot":"str"},{"t":"set","p":"params","pt":"msg","to":"{\"moviename\": \"Forrest Gump\"}","tot":"str"}],"action":"","property":"","from":"","to":"","reg":false,"x":415,"y":169,"wires":[["c9467e8a.62018","ce358d36.ff73c"]]},{"id":"b2bd2c4.0a654d","type":"debug","z":"488d970f.76d278","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","x":976,"y":349,"wires":[]},{"id":"3e3a33b3.12f48c","type":"inject","z":"488d970f.76d278","name":"Multi record query","topic":"","payload":"","payloadType":"date","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":171,"y":275,"wires":[["9e73c15d.04eb4"]]},{"id":"9e73c15d.04eb4","type":"change","z":"488d970f.76d278","name":"","rules":[{"t":"set","p":"query","pt":"msg","to":"MATCH (m:Movie {title: $moviename})<-[:ACTS_IN]-(a:Actor)  RETURN a","tot":"str"},{"t":"set","p":"params","pt":"msg","to":"{\"moviename\": \"Forrest Gump\"}","tot":"str"}],"action":"","property":"","from":"","to":"","reg":false,"x":411,"y":274,"wires":[["c9467e8a.62018","ce358d36.ff73c"]]},{"id":"94ca7897.d13bd8","type":"change","z":"488d970f.76d278","name":"","rules":[{"t":"set","p":"query","pt":"msg","to":"merge (m:Movie {title: $moviename}) set m += $props return m","tot":"str"},{"t":"set","p":"params","pt":"msg","to":"{\t   \"moviename\": \"My Blockbuster Movie\",\t   \"props\": {\t       \"studio\":\"Home Prod\",\t       \"runtime\":142,\t       \"description\":\"This is my first movie\",\t       \"language\":\"en\",\t       \"version\":274,\t       \"imageUrl\":\"https://c1.staticflickr.com/9/8387/8453530769_9bab22d205_b.jpg\",\t       \"genre\":\"Comedy\",\t       \"tagline\":\"How not to make a movie...\",\t       \"homepage\":\"\"\t   } \t}","tot":"jsonata"}],"action":"","property":"","from":"","to":"","reg":false,"x":411,"y":374,"wires":[["c9467e8a.62018","ce358d36.ff73c"]]},{"id":"8f998b68.265728","type":"inject","z":"488d970f.76d278","name":"Create example","topic":"","payload":"","payloadType":"date","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":167,"y":375,"wires":[["94ca7897.d13bd8"]]},{"id":"c9467e8a.62018","type":"debug","z":"488d970f.76d278","name":"query and params","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"true","x":752,"y":459,"wires":[]},{"id":"ce358d36.ff73c","type":"node-red-contrib-nulli-neo4j","z":"488d970f.76d278","name":"neo4j","url":"bolt://localhost:7687","username":"neo4j","password":"test1234","query":"","x":667.5,"y":273,"wires":[["edc735f1.c9aeb8"],["b2bd2c4.0a654d"]]}]
-```
-
 This node uses the [neo4j-driver](https://www.npmjs.com/package/neo4j-driver) package to communicate with neo4j.
 
 ### Runtime information
-This node was tested to Node.js v8.10.0 LTS and NPM 5.6.0 on Node-Red v0.18.4
+This node was tested to Node.js v7.4.0 and NPM 5.6.0 on Node-Red v0.18.4
+
+### Credits
+
+This node is based on <a href="https://github.com/nullibrew/node-red-contrib-nulli-neo4j" target="_new">node-red-contrib-nulli-neo4j</a> by <a href="http://nulli.com">Nulli</a>.

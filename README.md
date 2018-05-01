@@ -1,6 +1,6 @@
 # Neo4j Bolt with shareable driver
 
-A <a href="http://nodered.org" target="_new">Node-RED</a> node with the shareable server configuration that lets you run generic cypher queries on a Neo4j graph database.
+A <a href="http://nodered.org" target="_new">Node-RED</a> node with the shareable server configuration that lets you run generic cypher queries on a Neo4j graph database and receive all types of Neo4j records.
 
 ## Install
 
@@ -12,9 +12,9 @@ npm install node-red-contrib-neo4j-bolt
 
 ## Usage
 
-You specify a cypher query in the configuration. The parameters for the query (if needed) are read from `msg.params`. The cypher query can also be passed to the node as `msg.query`.
+First, you define the Neo4j bolt URL and the basic authentication username and password in the configuration node. This node creates a driver which will be shared across all Neo4j-Bolt nodes. Each node creates its own driver session.
 
-You define the Neo4j bolt URL and the basic authentication username and password in the configuration node which you can share across multiple neo4j-bolt nodes.
+You can specify a cypher query in the node configuration or pass to the node as `msg.query`. The parameters for the query (if needed) are read from `msg.params`.
 
 * Example of hard coded query in the configuration of the node.
 ```
@@ -46,7 +46,7 @@ msg.params:
 
 The node has two outputs. If the query returns only 1 record, the requested properties of the node are sent to output #1. If the query returns multiple records, an array of requested properties of the nodes are sent to output #2.
 
-This node uses the [neo4j-driver](https://www.npmjs.com/package/neo4j-driver) package to communicate with neo4j.
+This node uses the [neo4j-driver](https://www.npmjs.com/package/neo4j-driver) package to communicate with Neo4j.
 
 ### Runtime information
 This node was tested to Node.js v7.4.0 and NPM 5.6.0 on Node-Red v0.18.4

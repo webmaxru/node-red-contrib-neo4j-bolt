@@ -5,9 +5,6 @@
         defaults: {
             server: {value:"", type:"neo4j-bolt-server", required:true},
             name: {value:""},
-            url: {value:""},
-            username: {value:""},
-            password: {value:""},
             query: {value: ""}
         },
         inputs:1,
@@ -21,15 +18,15 @@
 
 <script type="text/x-red" data-template-name="neo4j-bolt">
     <div class="form-row">
-        <label for="node-input-server"><i class="icon-tag"></i> server</label>
+        <label for="node-input-server"><i class="icon-tag"></i> Server</label>
         <input type="text" id="node-input-server" placeholder="server">
       </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i>Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
         <br/>
-        <label for="node-input-query"><i class="icon-tag"></i>Cypher Query (opt)</label>
-        <textarea id="node-input-query" placeholder="MATCH (o:Object {attrib: 'value'}) RETURN o"></textarea>
+        <label for="node-input-query"><i class="icon-tag"></i>Cypher Query</label>
+        <textarea id="node-input-query" placeholder="MATCH (o:Object {attrib: 'value'}) RETURN o" style="width: 70%;"></textarea>
     </div>
 </script>
 
@@ -40,12 +37,8 @@
     <p>A cypher query can be defined on the node or can be passed in <code>msg.query</code>. The query can be parameterized and the parameters can be passed in <code>msg.params</code> as JSON (string or object).</p>
     <p>Outputs:
       <ul>
-        <li><code>1:</code>If the query returns a single record, it is returned in output #1 as an object (with the Neo4j node properties) in <code>msg.payload</code></li>
+        <li><code>1:</code>If the query returns a single record, it is returned in output #1 as an object with the Neo4j Record (Node, Relationship, Path, Integer) fields in <code>msg.payload</code></li>
         <li><code>2:</code>If the query returns a multiple records, they are returned in output #2 as an array of objects in <code>msg.payload</code></li>
       </ul>
-    </p>
-
-    <p>
-        Supported by <a href="https://github.com/webmaxru/">Maxim Salnikov</a>. Based on <a href="https://github.com/nullibrew/node-red-contrib-nulli-neo4j">node-red-contrib-nulli-neo4j</a> by <a href="http://nulli.com">Nulli</a>
     </p>
 </script>

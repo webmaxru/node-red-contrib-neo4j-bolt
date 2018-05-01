@@ -31,15 +31,59 @@ module.exports = function (RED) {
         var array_result = {
           payload: []
         }
+
+        function processInteger (integer) {
+          if (integer.constructor.name === 'Integer') {
+            return integer.toNumber()
+          }
+          return integer
+        }
+
+        function processRecord (record) {
+          if (record.constructor.name === 'Integer') {
+            return record.toNumber()
+          }
+
+          if (record.constructor.name === 'Path') {
+            record.start.identity = processInteger(record.start.identity)
+            record.end.identity = processInteger(record.end.identity)
+            record.segments = record.segments.map(segment => {
+
+              segment.start.identity = processInteger(segment.start.identity)
+              segment.end.identity = processInteger(segment.end.identity)
+
+              segment.relationship.identity = processInteger(segment.relationship.identity)
+              segment.relationship.start = processInteger(segment.relationship.start)
+              segment.relationship.end = processInteger(segment.relationship.end)
+
+              return segment
+            })
+            return record
+          }
+
+          if (record.constructor.name === 'Relationship') {
+            record.identity = processInteger(record.identity)
+            record.start = processInteger(record.start)
+            record.end = processInteger(record.end)
+            return record
+          }
+
+          if (record.constructor.name === 'Node') {
+            record.identity = processInteger(record.identity)
+            return record
+          }
+
+          return record
+        }
         resultPromise.then(result => {
           session.close()
           if (result.records.length > 1) {
             result.records.forEach(function (item, index, array) {
-              array_result.payload.push(item.get(0).properties)
+              array_result.payload.push(processRecord(item.get(0)))
             })
             node.send([null, array_result])
           } else {
-            scalar_result.payload = result.records[0].get(0).properties
+            scalar_result.payload = processRecord(result.records[0].get(0))
             node.send([scalar_result, null])
           }
         })

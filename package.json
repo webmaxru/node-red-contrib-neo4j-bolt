@@ -1,15 +1,14 @@
 {
   "author": {
-    "name": "salnikov@gmail.com"
+    "name": "Maxim Salnikov",
+    "email": "salnikov@gmail.com"
   },
   "bugs": {
     "url": "https://github.com/webmaxru/node-red-contrib-neo4j-bolt/issues"
   },
-  "bundleDependencies": false,
   "dependencies": {
     "neo4j-driver": "latest"
   },
-  "deprecated": false,
   "description": "Node RED node for neo4j",
   "homepage": "https://github.com/webmaxru/node-red-contrib-neo4j-bolt#readme",
   "keywords": [
@@ -34,5 +33,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "2.0.0"
+  "version": "2.0.1"
 }

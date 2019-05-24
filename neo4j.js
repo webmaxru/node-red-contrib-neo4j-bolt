@@ -73,12 +73,20 @@ module.exports = function (RED) {
           session.close()
           if (result.records.length > 1) {
             msg.payload = [];
-            result.records.forEach(function (item, index, array) {
-              msg.payload.push(processRecord(item.get(0)))
+            result.records.forEach(function (record, index, array) {
+              let itm = {};
+              record.forEach(function (item, index, array) {
+                itm[index] = processRecord(item)
+              })
+              msg.payload.push(itm)
             })
             node.send([null, msg])
           } else if (result.records.length == 1) {
-            msg.payload = processRecord(result.records[0].get(0))
+            let itm = {};
+            result.records[0].forEach(function (item, index, array) {
+              itm[index] = processRecord(item)
+            })
+            msg.payload = itm
             node.send([msg, null])
           } else {
             msg.payload = null

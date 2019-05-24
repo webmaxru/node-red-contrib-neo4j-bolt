@@ -82,6 +82,9 @@ module.exports = function (RED) {
             node.send([msg, null])
           }
         })
+        .catch(err => {
+            node.error(err, msg);
+        })
       })
     } else {
       node.status({

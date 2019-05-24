@@ -77,8 +77,11 @@ module.exports = function (RED) {
               msg.payload.push(processRecord(item.get(0)))
             })
             node.send([null, msg])
-          } else {
+          } else if (result.records.length == 1) {
             msg.payload = processRecord(result.records[0].get(0))
+            node.send([msg, null])
+          } else {
+            msg.payload = null
             node.send([msg, null])
           }
         })

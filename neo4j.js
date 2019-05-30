@@ -23,14 +23,8 @@ module.exports = function (RED) {
         } else {
           params = msg.params
         }
-        var scalar_result = {
-          payload: null
-        }
-        const resultPromise = session.run(query, params)
 
-        var array_result = {
-          payload: []
-        }
+        const resultPromise = session.run(query, params)
 
         function processInteger (integer) {
           if (integer.constructor.name === 'Integer') {
@@ -78,14 +72,29 @@ module.exports = function (RED) {
         resultPromise.then(result => {
           session.close()
           if (result.records.length > 1) {
-            result.records.forEach(function (item, index, array) {
-              array_result.payload.push(processRecord(item.get(0)))
+            msg.payload = [];
+            result.records.forEach(function (record, index, array) {
+              let itm = {};
+              record.forEach(function (item, index, array) {
+                itm[index] = processRecord(item)
+              })
+              msg.payload.push(itm)
             })
-            node.send([null, array_result])
+            node.send([null, msg])
+          } else if (result.records.length == 1) {
+            let itm = {};
+            result.records[0].forEach(function (item, index, array) {
+              itm[index] = processRecord(item)
+            })
+            msg.payload = itm
+            node.send([msg, null])
           } else {
-            scalar_result.payload = processRecord(result.records[0].get(0))
-            node.send([scalar_result, null])
+            msg.payload = null
+            node.send([msg, null])
           }
+        })
+        .catch(err => {
+            node.error(err, msg);
         })
       })
     } else {

@@ -1,4 +1,4 @@
-const neo4j = require('neo4j-driver').v1
+const neo4j = require('neo4j-driver')
 module.exports = function (RED) {
   function Neo4jBolt (config) {
     RED.nodes.createNode(this, config)
@@ -70,7 +70,7 @@ module.exports = function (RED) {
           return record
         }
         resultPromise.then(result => {
-          session.close()
+//           session.close()
           if (result.records.length > 1) {
             msg.payload = [];
             result.records.forEach(function (record, index, array) {
@@ -96,6 +96,7 @@ module.exports = function (RED) {
         .catch(err => {
             node.error(err, msg);
         })
+//         .then(() => session.close())
       })
     } else {
       node.status({

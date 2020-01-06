@@ -1,4 +1,4 @@
-const neo4j = require('neo4j-driver').v1
+const neo4j = require('neo4j-driver')
 module.exports = function (RED) {
   function Neo4jBolt (config) {
     RED.nodes.createNode(this, config)

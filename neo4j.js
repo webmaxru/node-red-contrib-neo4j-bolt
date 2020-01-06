@@ -70,7 +70,6 @@ module.exports = function (RED) {
           return record
         }
         resultPromise.then(result => {
-//           session.close()
           if (result.records.length > 1) {
             msg.payload = [];
             result.records.forEach(function (record, index, array) {
@@ -96,7 +95,6 @@ module.exports = function (RED) {
         .catch(err => {
             node.error(err, msg);
         })
-//         .then(() => session.close())
       })
     } else {
       node.status({

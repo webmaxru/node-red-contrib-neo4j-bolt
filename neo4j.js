@@ -96,7 +96,7 @@ module.exports = function (RED) {
         .catch(err => {
             node.error(err, msg);
         })
-        .then(() => session.close())
+//         .then(() => session.close())
       })
     } else {
       node.status({

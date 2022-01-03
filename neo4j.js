@@ -7,7 +7,7 @@ module.exports = function (RED) {
     node.server = RED.nodes.getNode(config.server)
 
     const driver = node.server.driver
-    const session = driver.session()
+    const session = driver.session()    // session for status display
 
     if (session) {
       node.status({
@@ -17,6 +17,11 @@ module.exports = function (RED) {
       })
       node.on('input', function (msg) {
         var query = config.query || msg.query
+        /*
+        *  Need one session per request
+        *  ref: https://stackoverflow.com/questions/62615761/queries-cannot-be-run-directly-on-a-session-with-an-open-transaction-either-run
+        */
+        var boltSession = driver.session()  
         let params = null
         if (typeof (msg.params) === 'string') {
           params = JSON.parse(msg.params)
@@ -24,7 +29,7 @@ module.exports = function (RED) {
           params = msg.params
         }
 
-        const resultPromise = session.run(query, params)
+        const resultPromise = boltSession.run(query, params)
 
         function processInteger (integer) {
           if (integer.constructor.name === 'Integer') {
@@ -91,8 +96,10 @@ module.exports = function (RED) {
             msg.payload = null
             node.send([msg, null])
           }
+          boltSession.close()
         })
         .catch(err => {
+            boltSession.close()
             node.error(err, msg);
         })
       })
@@ -105,6 +112,7 @@ module.exports = function (RED) {
     }
 
     node.on('close', function () {
+      session.close()
       driver.close()
     })
   }

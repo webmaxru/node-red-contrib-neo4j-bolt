@@ -21,15 +21,15 @@ module.exports = function (RED) {
         *  Need one session per request
         *  ref: https://stackoverflow.com/questions/62615761/queries-cannot-be-run-directly-on-a-session-with-an-open-transaction-either-run
         */
-        var boltSession = driver.session()  
+        var boltSession = msg.database 
+                          ? driver.session({database: msg.database})  // use msg.database if supplied
+                          : driver.session() 
         let params = null
         if (typeof (msg.params) === 'string') {
           params = JSON.parse(msg.params)
         } else {
           params = msg.params
         }
-
-        const resultPromise = boltSession.run(query, params)
 
         function processInteger (integer) {
           if (integer.constructor.name === 'Integer') {
@@ -74,7 +74,8 @@ module.exports = function (RED) {
 
           return record
         }
-        resultPromise.then(result => {
+        
+        boltSession.run(query, params).then(result => {
           if (result.records.length > 1) {
             msg.payload = [];
             result.records.forEach(function (record, index, array) {

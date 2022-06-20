@@ -35,6 +35,7 @@
 
     <p>Neo4J cypher node that lets you run generic cypher queries on a Neo4j graph database.</p>
     <p>A cypher query can be defined on the node or can be passed in <code>msg.query</code>. The query can be parameterized and the parameters can be passed in <code>msg.params</code> as JSON (string or object).</p>
+    <p>The database name to use may be passed in <code>msg.database</code>.</p>
     <p>Outputs:
       <ul>
         <li><code>1:</code>If the query returns a single record, it is returned in output #1 as an object with the Neo4j Record (Node, Relationship, Path, Integer) fields in <code>msg.payload</code></li>

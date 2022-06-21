@@ -14,7 +14,7 @@ npm install node-red-contrib-neo4j-bolt
 
 First, you define the Neo4j bolt URL and the basic authentication username and password in the configuration node. This node creates a driver which will be shared across all Neo4j-Bolt nodes. Each node creates its own driver session.
 
-You can specify the database to use as `msg.database`. If not specified, the driver will use the dfault.
+You can specify the database to use as `msg.database`. If not specified, the driver will use the default.
 
 You can specify a cypher query in the node configuration or pass to the node as `msg.query`. The parameters for the query (if needed) are read from `msg.params`.
 

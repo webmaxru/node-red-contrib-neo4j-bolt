@@ -5,7 +5,9 @@
         defaults: {
             server: {value:"", type:"neo4j-bolt-server", required:true},
             name: {value:""},
-            query: {value: ""}
+            query: {value: ""},
+            sessions: {value: 10},
+            database: {value: ""}
         },
         inputs:1,
         outputs:2,
@@ -27,6 +29,12 @@
         <br/>
         <label for="node-input-query"><i class="icon-tag"></i>Cypher Query</label>
         <textarea id="node-input-query" placeholder="MATCH (o:Object {attrib: 'value'}) RETURN o" style="width: 70%;"></textarea>
+        <br/>
+        <label for="node-input-sessions"><i class="icon-tag"></i>Concurrent sessions</label>
+        <input type="text" id="node-input-sessions" placeholder="10" />
+        <br />
+        <label for="node-input-database"><i class="icon-tag"></i> Database</label>
+        <input type="text" id="node-input-database" placeholder="database">
     </div>
 </script>
 

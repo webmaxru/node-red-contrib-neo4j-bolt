@@ -4,12 +4,25 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config)
     var node = this
 
+    var sessions = []
+
     node.server = RED.nodes.getNode(config.server)
 
     const driver = node.server.driver
-    const session = driver.session()    // session for status display
 
-    if (session) {
+    for( i=0; i<config.sessions; i++){
+      try {
+        sessions.push( {
+          ready: true,
+          session: driver.session({database: config.database})
+        })  
+      } catch (err) {
+        console.log(err)
+        break
+      }
+    }
+
+    if (sessions.length > 0) {
       node.status({
         fill: 'green',
         shape: 'dot',
@@ -17,13 +30,13 @@ module.exports = function (RED) {
       })
       node.on('input', function (msg) {
         var query = config.query || msg.query
-        /*
-        *  Need one session per request
-        *  ref: https://stackoverflow.com/questions/62615761/queries-cannot-be-run-directly-on-a-session-with-an-open-transaction-either-run
-        */
-        var boltSession = msg.database 
-                          ? driver.session({database: msg.database})  // use msg.database if supplied
-                          : driver.session() 
+
+        var session
+        while (null === session.find(s => s.ready === true)) {
+          
+        }
+        session.ready = false
+        boltSession = session.session
         let params = null
         if (typeof (msg.params) === 'string') {
           params = JSON.parse(msg.params)
@@ -97,10 +110,10 @@ module.exports = function (RED) {
             msg.payload = null
             node.send([msg, null])
           }
-          boltSession.close()
+          session.ready = true
         })
         .catch(err => {
-            boltSession.close()
+            session.ready = true
             node.error(err, msg);
         })
       })
@@ -113,7 +126,7 @@ module.exports = function (RED) {
     }
 
     node.on('close', function () {
-      session.close()
+      sessions.map(s => s.session.close())
       driver.close()
     })
   }

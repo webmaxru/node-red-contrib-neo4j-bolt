@@ -14,7 +14,7 @@ module.exports = function (RED) {
     // set up a list of sessions for later use, to avoid session allocation error later on
     for( i=0; i<config.sessions; i++){
       try {
-        sessions.push(driver.session())
+        sessions.push(driver.session({database: config.database || 'neo4j'}))
         readySessionList.push(i)
       } catch (err) {
         console.log(err)

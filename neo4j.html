@@ -49,6 +49,7 @@
       <ul>
         <li><code>1:</code>If the query returns a single record, it is returned in output #1 as an object with the Neo4j Record (Node, Relationship, Path, Integer) fields in <code>msg.payload</code></li>
         <li><code>2:</code>If the query returns a multiple records, they are returned in output #2 as an array of objects in <code>msg.payload</code></li>
+        <li><code>2:</code>If there are no available sessions, the msg is passed untouched for the calling flow to decide on what to do, e.g. retry</li>
       </ul>
     </p>
 </script>

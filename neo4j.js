@@ -128,7 +128,7 @@ module.exports = function (RED) {
     }
 
     node.on('close', function () {
-      sessions.map(s => s.session.close())
+      sessions.map(s => s.close())
       driver.close()
     })
   }

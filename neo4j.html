@@ -10,7 +10,8 @@
             database: {value: ""}
         },
         inputs:1,
-        outputs:2,
+        outputs:3,
+        outputLabels: ["single", "array", "no session available - retry later"],
         icon: "neo4j.png",
         label: function() {
             return this.name||"neo4j-bolt";

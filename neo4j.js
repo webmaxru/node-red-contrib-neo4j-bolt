@@ -14,7 +14,7 @@ module.exports = function (RED) {
     // set up a list of sessions for later use, to avoid session allocation error later on
     for( i=0; i<config.sessions; i++){
       try {
-        sessions.push(driver.session({database: config.database || 'neo4j'}))
+        sessions.push(driver.session({ database: config.database || 'neo4j' }));
         readySessionList.push(i)
       } catch (err) {
         console.log(err)
@@ -34,8 +34,10 @@ module.exports = function (RED) {
         if( readySessionList.length > 0 ){
           // remove and use a session
           var readySession = readySessionList.shift()
-          var boltSession = sessions[readySession]
-
+          var boltSession = driver.session({
+            database: msg.database || config.database || 'neo4j'
+          });
+          
           let params = null
           if (typeof (msg.params) === 'string') {
             params = JSON.parse(msg.params)

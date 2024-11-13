@@ -108,7 +108,8 @@ module.exports = function (RED) {
               msg.payload = itm
               node.send([msg, null, null])
             } else {
-              node.send([null, null, null])
+              msg.payload = [];
+              node.send([msg, null, null]);
             }
           })
           .catch(err => {

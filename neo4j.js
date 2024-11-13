@@ -6,6 +6,7 @@ module.exports = function (RED) {
 
     var sessions = []
     var readySessionList = []
+    const SESSION_TIMEOUT_MS = 4000; // 4 seconds of inactivity
 
     node.server = RED.nodes.getNode(config.server)
 
@@ -37,6 +38,10 @@ module.exports = function (RED) {
           var boltSession = driver.session({
             database: msg.database || config.database || 'neo4j'
           });
+          
+          if (boltSession.inactivityTimeout) {
+            clearTimeout(boltSession.inactivityTimeout);
+          }
           
           let params = null
           if (typeof (msg.params) === 'string') {
@@ -114,7 +119,14 @@ module.exports = function (RED) {
           .catch(err => {
             node.error(err, msg);
           }).finally(() => {
+             // Return the session to the ready pool and set an inactivity timeout
             readySessionList.push(readySession) 
+            boltSession.inactivityTimeout = setTimeout(() => {
+              // Close the session if not used within the timeout period
+              boltSession.close();
+              sessions[readySession] = null; // Remove from the session pool
+              console.log(`Session ${readySession} closed due to inactivity.`);
+            }, SESSION_TIMEOUT_MS);
           })
         } else {
           // no sessions available, send the message out on the third  port for further processing bty caller

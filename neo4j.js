@@ -125,7 +125,7 @@ module.exports = function (RED) {
               // Close the session if not used within the timeout period
               boltSession.close();
               sessions[readySession] = null; // Remove from the session pool
-              console.log(`Session ${readySession} closed due to inactivity.`);
+              //console.log(`Session ${readySession} closed due to inactivity.`);
             }, SESSION_TIMEOUT_MS);
           })
         } else {

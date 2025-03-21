@@ -46,6 +46,8 @@ module.exports = function (RED) {
           }
 
           function processInteger (integer) {
+            if (integer === null) return null;
+            
             if (integer.constructor.name === 'Integer') {
               return integer.toNumber()
             }
@@ -53,6 +55,8 @@ module.exports = function (RED) {
           }
 
           function processRecord (record) {
+            if (record === null) return null;
+
             if (record.constructor.name === 'Integer') {
               return record.toNumber()
             }
